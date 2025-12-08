@@ -1,0 +1,108 @@
+    .featured-slider-container {
+  // Custom pagination styles
+  .swiper-pagination {
+    @apply bottom-8;
+    
+    .swiper-pagination-bullet {
+      @apply w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-300;
+      
+      &-active {
+        @apply w-8 rounded-lg scale-125;
+      }
+    }
+  }
+
+  // Custom navigation buttons
+  .swiper-button-prev,
+  .swiper-button-next {
+    @apply shadow-lg border border-gray-200 dark:border-gray-700;
+    
+    &:after {
+      @apply hidden;
+    }
+    
+    &:hover {
+      @apply shadow-xl scale-110;
+    }
+  }
+
+  // Slide animations
+  .featured-slide {
+    // Entrance animation
+    @apply transform transition-all duration-500;
+    
+    // Hover effects
+    &:hover {
+      @apply scale-105 shadow-3xl;
+      
+      .featured-img img {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // Gradient text utility
+  .gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  // Custom shadows
+  .shadow-3xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  // Line clamp utility
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  // Smooth transitions for dark mode
+  .dark {
+    .featured-slide {
+      @apply bg-gray-800 border-gray-700;
+    }
+    
+    .swiper-pagination-bullet {
+      @apply bg-gray-400;
+      
+      &-active {
+        @apply bg-gradient-to-r from-blue-400 to-purple-500;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .featured-slider-container {
+    .swiper-navigation {
+      @apply hidden;
+    }
+    
+    .featured-slide {
+      @apply w-[18rem] p-4;
+    }
+  }
+}
+
+// Loading animation for images
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.image-loading {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+  background-size: 800px 104px;
+}

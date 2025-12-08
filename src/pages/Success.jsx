@@ -1,0 +1,101 @@
+import React, { useContext, useState, useEffect } from "react";
+import { CircularProgress } from "@mui/material";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import httpClient from "../httpClient";
+import cartContext from "../contexts/cart/cartContext";
+
+const Success = () => {
+  const [active, setActive] = useState(false);
+  const navigate = useNavigate();
+
+  const { removeItem } = useContext(cartContext);
+
+  const remove = (id) => {
+    httpClient.post("/delete_cart", {
+      email: localStorage.getItem("email"),
+      id: id,
+    });
+  };
+
+  useEffect(() => {
+    // Run this logic when the component mounts
+    if (localStorage.getItem("wallet") === "true") {
+      setTimeout(() => {
+        setActive(true);
+        setTimeout(() => {
+          httpClient.post("/wallet", {
+            email: localStorage.getItem("email"),
+            walletAmount: localStorage.getItem("totalPrice"),
+          });
+          httpClient.post("/add_wallet_history", {
+            email: localStorage.getItem("email"),
+            history: {
+              desc: "Recharge",
+              amount: Number(localStorage.getItem("totalPrice")),
+              date: new Date().toLocaleString(),
+              add: true,
+            },
+          });
+          navigate("/my-wallet");
+          localStorage.removeItem("wallet");
+        }, 3000);
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        setActive(true);
+        setTimeout(() => {
+          httpClient.post("/add_order", {
+            orders: JSON.parse(localStorage.getItem("orders")),
+            email: localStorage.getItem("email"),
+          });
+          JSON.parse(localStorage.getItem("orders")).forEach((item) => {
+            removeItem(item.id);
+            remove(item.id);
+          });
+          navigate("/my-orders");
+        }, 3000);
+      }, 1000);
+    }
+  }, [navigate, removeItem]);
+
+  return (
+    <div
+      className="py-[100px] pt-[100px] text-center min-h-screen"
+      style={{ backgroundColor: "#E8F1F2" }} // Light background
+    >
+      {/* Success Icon */}
+      <div
+        className={`transition-all duration-300 ease-out h-[200px] flex justify-center items-end ${
+          active ? "text-[200px]" : "text-[0]"
+        }`}
+        style={{ color: "#A9D6E5" }} // Aqua blue for success
+      >
+        <IoCheckmarkDoneCircleOutline />
+      </div>
+
+      {/* Success Text */}
+      <div className="p-[50px] pt-[20px] max-w-[1200px] w-full my-0 mx-auto">
+        <h1 className="text-3xl font-bold" style={{ color: "#4A4C52" }}>
+          Payment Successful!!!
+        </h1>
+        <br />
+        <h3 className="text-lg" style={{ color: "#4A4C52" }}>
+          Thank you for choosing TELMEDSPHERE!
+        </h3>
+      </div>
+
+      {/* Loader & Redirecting Message */}
+      <div
+        className="flex justify-center items-center cursor-pointer"
+        onClick={() => setActive((prev) => !prev)}
+        style={{ color: "#4A4C52" }}
+      >
+        <CircularProgress size={24} sx={{ color: "#A9D6E5" }} />
+        <p className="ml-[10px]">redirecting to orders page...</p>
+      </div>
+    </div>
+  );
+};
+
+export default Success;

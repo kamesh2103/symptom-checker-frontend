@@ -1,0 +1,17 @@
+{
+  "sourceDirectories": ["./src"],
+  "fileExtensions": [".js", ".jsx", ".ts", ".tsx"],
+  "sourceLanguage": "en",
+  "targetLanguages": ["hi"],
+  "excludePatterns": [
+    "node_modules",
+    "*.test.js",
+    "*.spec.js",
+    "*.config.js"
+  ],
+  "translationApi": {
+    "provider": "google-translate",
+    "apiKey": "YOUR_API_KEY",
+    "rateLimitDelay": 100
+  }
+}
