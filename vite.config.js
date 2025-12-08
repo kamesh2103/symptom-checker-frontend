@@ -1,13 +1,13 @@
-import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
-import svgrPlugin from 'vite-plugin-svgr';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import svgrPlugin from 'vite-plugin-svgr'
 
 export default defineConfig({
   build: {
-    outDir: 'build', 
+    outDir: 'build',
   },
   plugins: [
-    reactRefresh(),
+    react(),
     svgrPlugin({
       svgrOptions: {
         icon: true,
@@ -15,6 +15,6 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: 3000, // Optional; doesn't affect production
+    port: 3000,
   },
-});
+})
