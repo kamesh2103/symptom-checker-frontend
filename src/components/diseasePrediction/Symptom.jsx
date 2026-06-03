@@ -154,7 +154,7 @@ class Symptom extends Component {
 
   testBackendConnection = async () => {
     try {
-      const response = await fetch('http://localhost:7000/health');
+      const response = await fetch('https://disease-predictor-model.onrender.com/predict/health');
       if (response.ok) {
         console.log("Backend connection successful");
         return true;
