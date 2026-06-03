@@ -44,10 +44,10 @@ class Symptom extends Component {
       })
       .then((result) => {
         console.log("Full API Response:", result);
-        
+
         // FIXED: Handle the actual response structure
         let predictions = [];
-        
+
         if (result && result.predictions && Array.isArray(result.predictions)) {
           // Response has predictions array
           predictions = result.predictions;
@@ -59,13 +59,13 @@ class Symptom extends Component {
         } else {
           console.log("No valid predictions found in response");
         }
-        
-        this.setState({ 
-          disease_possibility: predictions, 
-          loading: false 
+
+        this.setState({
+          disease_possibility: predictions,
+          loading: false
         });
         this.props.updateDiseasePossibility(predictions);
-        
+
         // Show message if no predictions found
         if (predictions.length === 0) {
           alert("No disease predictions found for the given symptoms.");
@@ -73,20 +73,20 @@ class Symptom extends Component {
       })
       .catch((error) => {
         console.error("Error sending symptoms:", error);
-        this.setState({ 
-          error: error.message, 
+        this.setState({
+          error: error.message,
           loading: false,
-          disease_possibility: [] 
+          disease_possibility: []
         });
-        
-        if (error.message.includes('recognized symptoms') || 
-            error.message.includes('symptom combination') ||
-            error.message.includes('Bad request')) {
+
+        if (error.message.includes('recognized symptoms') ||
+          error.message.includes('symptom combination') ||
+          error.message.includes('Bad request')) {
           alert(`Prediction failed: ${error.message}`);
         } else {
           alert("Failed to connect to the prediction service. Please try again.");
         }
-        
+
         this.props.updateDiseasePossibility([]);
       });
   };
@@ -96,8 +96,8 @@ class Symptom extends Component {
       this.setState(
         (prevState) => {
           const newSymptoms = [symptom, ...prevState.user_symptoms];
-          return { 
-            user_symptoms: newSymptoms, 
+          return {
+            user_symptoms: newSymptoms,
             searched: "",
             error: null
           };
@@ -286,25 +286,10 @@ class Symptom extends Component {
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <button
             onClick={this.on_click_reset_button}
-            className="px-5 py-2 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2 b text-white font-medium rounded-lg border border-teal-700 transition-all duration-200 transform hover:scale-105 text-sm disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
             disabled={user_symptoms.length === 0 || loading}
           >
             Reset All
-          </button>
-
-          <button
-            onClick={this.sendSymptomsToBackend}
-            className="px-5 py-2 bg-gradient-to-r from-teal-400 to-teal-600 hover:from-teal-500 hover:to-teal-700 text-white font-medium rounded-lg transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-            disabled={user_symptoms.length === 0 || loading}
-          >
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Analyzing...
-              </>
-            ) : (
-              "Analyze Symptoms"
-            )}
           </button>
         </div>
 
@@ -312,7 +297,7 @@ class Symptom extends Component {
         <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
           <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Debug Info:</h3>
           <p className="text-xs text-gray-600 dark:text-gray-400">
-            Selected Symptoms: {user_symptoms.length} | 
+            Selected Symptoms: {user_symptoms.length} |
             Current Predictions: {this.state.disease_possibility.length}
           </p>
         </div>
